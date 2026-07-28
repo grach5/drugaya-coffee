@@ -73,11 +73,18 @@
 <main id="main">
 
   <!-- ============ HERO ============ -->
-  <section class="hero container" id="top">
-    <div class="hero__inner">
+  <section class="hero" id="top">
+    <div class="hero__bg" aria-hidden="true">
+      <img
+        src="https://images.unsplash.com/photo-1748908271645-1d2b72291839?auto=format&fit=crop&w=2400&h=1400&q=68"
+        alt=""
+        width="2400" height="1400"
+        loading="eager" fetchpriority="high" decoding="async">
+    </div>
+    <div class="container hero__inner">
       <div class="hero__copy">
         <p class="hero__eyebrow">Кофейня · Басманный район</p>
-        <h1 class="hero__title">Другая</h1>
+        <h1 class="hero__title">Друг<span class="hero__title-other">ая</span></h1>
         <p class="hero__slogan">Авторские напитки</p>
         <p class="hero__desc">Не ещё одна кофейня в ряду похожих. Здесь заваривают то, чего нет по соседству — тихо, внимательно, без лишнего шума.</p>
         <ul class="hero__meta">
@@ -111,6 +118,20 @@
     </div>
   </section>
 
+  <!-- ============ BEAN STRIP — signature concept: one bean, another path ============ -->
+  <div class="container bean-strip-wrap" data-reveal aria-hidden="true">
+    <div class="bean-strip">
+      <svg class="bean" viewBox="0 0 28 44"><ellipse cx="14" cy="22" rx="12" ry="21"/><path d="M14 4C9 14 19 30 14 40"/></svg>
+      <svg class="bean" viewBox="0 0 28 44"><ellipse cx="14" cy="22" rx="12" ry="21"/><path d="M14 4C9 14 19 30 14 40"/></svg>
+      <svg class="bean" viewBox="0 0 28 44"><ellipse cx="14" cy="22" rx="12" ry="21"/><path d="M14 4C9 14 19 30 14 40"/></svg>
+      <svg class="bean bean--other" viewBox="0 0 28 44"><ellipse cx="14" cy="22" rx="12" ry="21"/><path d="M14 4C9 14 19 30 14 40"/></svg>
+      <svg class="bean" viewBox="0 0 28 44"><ellipse cx="14" cy="22" rx="12" ry="21"/><path d="M14 4C9 14 19 30 14 40"/></svg>
+      <svg class="bean" viewBox="0 0 28 44"><ellipse cx="14" cy="22" rx="12" ry="21"/><path d="M14 4C9 14 19 30 14 40"/></svg>
+      <svg class="bean" viewBox="0 0 28 44"><ellipse cx="14" cy="22" rx="12" ry="21"/><path d="M14 4C9 14 19 30 14 40"/></svg>
+    </div>
+    <p class="bean-strip__note">Одна другая среди похожих</p>
+  </div>
+
   <!-- ============ ABOUT ============ -->
   <section class="section container" id="about">
     <div class="about__grid">
@@ -122,6 +143,14 @@
           <p>Здесь нет очереди ради очереди и вывески ради вывески. Есть баристы, которые составляют напиток так же внимательно, как повар — блюдо, и пространство, где хочется задержаться на пару минут дольше, чем планировали.</p>
           <p>Кофейню ведёт ИП Мартынова М. А. Формат — камерный: один зал на первом этаже, ежедневная работа с 10:00 до 21:00 и внимание к деталям, которое сложно уместить в рекламный баннер — его проще почувствовать на месте.</p>
         </div>
+        <figure class="about__photo">
+          <img
+            src="https://images.unsplash.com/photo-1567613747125-f7ac12360d77?auto=format&fit=crop&w=1200&h=900&q=75"
+            alt="Крупным планом свежеобжаренные кофейные зёрна — внимание к детали, о котором мы говорим"
+            width="1200" height="900"
+            loading="lazy" decoding="async">
+          <figcaption>Внимание к детали — не на словах</figcaption>
+        </figure>
       </div>
 
       <div class="about__facts" data-reveal>
@@ -214,26 +243,50 @@
   <section class="section container" id="gallery">
     <div class="section-head" data-reveal>
       <p class="eyebrow">Пространство</p>
-      <h2 class="section-title">Атмосфера без фотографий</h2>
-      <p class="section-lede">Мы принципиально не используем стоковые снимки. Пока настоящая фотосъёмка в работе — вот абстрактные композиции в тонах кофейни, передающие её настроение.</p>
+      <h2 class="section-title">Как здесь на самом деле</h2>
+      <p class="section-lede">Настоящие кадры кофейни и деталей на стойке — без постановки, ровно то, что видно с порога.</p>
     </div>
     <div class="gallery__grid">
-      <div class="gallery-tile gallery-tile--1" data-reveal role="img" aria-label="Абстрактная композиция в глубоких винных и графитовых тонах — настроение барной стойки">
-        <span class="gallery-tile__caption">Барная стойка</span>
+      <div class="gallery-tile gallery-tile--1" data-reveal>
+        <img
+          src="https://images.unsplash.com/photo-1775059956734-78ffd2075cec?auto=format&fit=crop&w=1200&h=1200&q=75"
+          alt="Зал кофейни с деревянными столами и подвесными светильниками, вид у окна"
+          width="1200" height="1200" loading="lazy" decoding="async">
+        <span class="gallery-tile__caption">Зал</span>
       </div>
-      <div class="gallery-tile gallery-tile--2" data-reveal role="img" aria-label="Абстрактный диагональный узор в спокойных серых тонах — утренний свет в зале">
-        <span class="gallery-tile__caption">Свет утром</span>
+      <div class="gallery-tile gallery-tile--2" data-reveal>
+        <img
+          src="https://images.unsplash.com/photo-1524671710025-d79530c2f957?auto=format&fit=crop&w=900&h=900&q=75"
+          alt="Чашка кофе с латте-артом на тёмном деревянном столе, вид сверху"
+          width="900" height="900" loading="lazy" decoding="async">
+        <span class="gallery-tile__caption">Чашка</span>
       </div>
-      <div class="gallery-tile gallery-tile--3" data-reveal role="img" aria-label="Абстрактная радиальная композиция в оттенках брасса — зерно и вода">
-        <span class="gallery-tile__caption">Зерно и вода</span>
+      <div class="gallery-tile gallery-tile--3" data-reveal>
+        <img
+          src="https://images.unsplash.com/photo-1554646533-de2d01895a23?auto=format&fit=crop&w=900&h=900&q=75"
+          alt="Кофейные зёрна крупным планом"
+          width="900" height="900" loading="lazy" decoding="async">
+        <span class="gallery-tile__caption">Зерно</span>
       </div>
-      <div class="gallery-tile gallery-tile--4" data-reveal role="img" aria-label="Абстрактный переход от графитового к винному — тихий угол зала">
+      <div class="gallery-tile gallery-tile--4" data-reveal>
+        <img
+          src="https://images.unsplash.com/photo-1754338785183-70cd3cce3d21?auto=format&fit=crop&w=1200&h=1200&q=75"
+          alt="Тихий угол зала с мягким креслом, растением и дневным светом из окна"
+          width="1200" height="1200" loading="lazy" decoding="async">
         <span class="gallery-tile__caption">Тихий угол</span>
       </div>
-      <div class="gallery-tile gallery-tile--5" data-reveal role="img" aria-label="Абстрактная кольцевая композиция — вид на окно и Старую Басманную улицу">
-        <span class="gallery-tile__caption">Окно на Басманную</span>
+      <div class="gallery-tile gallery-tile--5" data-reveal>
+        <img
+          src="https://images.unsplash.com/photo-1656049357337-8af927e2b0d5?auto=format&fit=crop&w=900&h=900&q=75"
+          alt="Тёмный зал кофейни с винными креслами у окна в вечернем свете"
+          width="900" height="900" loading="lazy" decoding="async">
+        <span class="gallery-tile__caption">Окно</span>
       </div>
-      <div class="gallery-tile gallery-tile--6" data-reveal role="img" aria-label="Абстрактный мягкий градиент — утренний ритуал приготовления напитка">
+      <div class="gallery-tile gallery-tile--6" data-reveal>
+        <img
+          src="https://images.unsplash.com/photo-1550249825-672da2a75487?auto=format&fit=crop&w=900&h=900&q=75"
+          alt="Заваривание кофе методом пуровер — вода стекает через фильтр в стеклянный сосуд"
+          width="900" height="900" loading="lazy" decoding="async">
         <span class="gallery-tile__caption">Ритуал</span>
       </div>
     </div>

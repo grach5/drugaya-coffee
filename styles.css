@@ -76,6 +76,7 @@
   --tilt-perspective: 1000px;
   --parallax-factor: 0.12;    /* hero background scroll speed ratio (unitless — read by JS) */
   --mark-spin-duration: 13s;  /* signature-mark continuous 3D wobble, one quiet cycle */
+  --kenburns-duration: 22s;   /* hero photo slow zoom, one quiet cycle */
 }
 
 /* =========================================================
@@ -233,6 +234,55 @@ h2.section-title {
 }
 
 /* =========================================================
+   Bean strip — the brand concept made visible: a row of
+   identical dark beans, and one, quietly, another colour,
+   another angle. Same idea as the "ая" in the wordmark above.
+   ========================================================= */
+.bean-strip-wrap {
+  padding-block: var(--sp-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.bean-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  perspective: 500px;
+}
+.bean {
+  width: 16px;
+  height: auto;
+  color: var(--color-ink-faint);
+  flex-shrink: 0;
+}
+.bean ellipse { fill: currentColor; }
+.bean path { fill: none; stroke: var(--color-paper); stroke-width: 2; }
+.bean--other {
+  width: 20px;
+  color: var(--color-brass);
+  transform: rotate(-18deg);
+  animation: beanSway 6s ease-in-out infinite;
+  transform-origin: center;
+}
+@keyframes beanSway {
+  0%, 100% { transform: rotate(-18deg) translateY(0); }
+  50%      { transform: rotate(-6deg) translateY(-4px); }
+}
+.bean-strip__note {
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+@media (min-width: 700px) {
+  .bean { width: 20px; }
+  .bean--other { width: 26px; }
+}
+
+/* =========================================================
    Header
    ========================================================= */
 .site-header {
@@ -373,8 +423,46 @@ h2.section-title {
   position: relative;
   padding-block: var(--sp-8) var(--sp-9);
   overflow: hidden;
+  /* Photo background sits behind dark text; swap focus + line colors
+     the same way .booking already does for its near-black panel. */
+  --color-focus: var(--color-brass);
 }
+
+/* Hero photo background — the "wow" moment: a slow, continuous Ken Burns
+   zoom under a dark signature-wine overlay. Purely CSS, paused entirely
+   by the global prefers-reduced-motion rule below. */
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--color-ink);
+}
+.hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+  transform: scale(1.04);
+  animation: heroKenBurns var(--kenburns-duration) ease-in-out infinite alternate;
+  will-change: transform;
+}
+.hero__bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, rgba(23,25,27,0.9) 0%, rgba(23,25,27,0.74) 40%, rgba(23,25,27,0.38) 72%, rgba(23,25,27,0.58) 100%),
+    linear-gradient(to top, var(--color-paper) -6%, transparent 22%);
+}
+@keyframes heroKenBurns {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.16); }
+}
+
 .hero__inner {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: var(--sp-8);
   align-items: end;
@@ -385,7 +473,7 @@ h2.section-title {
   font-size: var(--fs-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-ink-soft);
+  color: color-mix(in srgb, var(--color-paper) 80%, transparent);
   margin-bottom: var(--sp-5);
 }
 .hero__title {
@@ -394,18 +482,31 @@ h2.section-title {
   font-size: var(--fs-xxl);
   line-height: 0.95;
   letter-spacing: -0.02em;
-  color: var(--color-ink);
+  color: var(--color-paper);
+}
+/* Signature concept: the word itself carries the brand idea — "Друг"
+   stays put, "ая" (the part that makes it "other") is visually another —
+   brass, tilted, quietly astir, echoing the one gold bean below. */
+.hero__title-other {
+  display: inline-block;
+  color: var(--color-brass);
+  transform: rotate(-4deg);
+  animation: titleOtherSway 7s ease-in-out infinite;
+}
+@keyframes titleOtherSway {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50%      { transform: rotate(3deg) translateY(-3px); }
 }
 .hero__slogan {
   font-size: var(--fs-lg);
-  color: var(--color-accent);
+  color: var(--color-brass);
   font-family: var(--font-display);
   font-weight: 500;
   margin-top: var(--sp-4);
 }
 .hero__desc {
   margin-top: var(--sp-5);
-  color: var(--color-ink-soft);
+  color: color-mix(in srgb, var(--color-paper) 78%, transparent);
   font-size: var(--fs-md);
   max-width: 34ch;
 }
@@ -415,16 +516,21 @@ h2.section-title {
   gap: var(--sp-5);
   margin-top: var(--sp-6);
   font-size: var(--fs-sm);
-  color: var(--color-ink-soft);
+  color: color-mix(in srgb, var(--color-paper) 75%, transparent);
 }
 .hero__meta li { display: flex; align-items: center; gap: var(--sp-2); }
-.hero__meta svg { width: 16px; height: 16px; color: var(--color-accent); }
+.hero__meta svg { width: 16px; height: 16px; color: var(--color-brass); }
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-4);
   margin-top: var(--sp-7);
 }
+.hero .btn-ghost {
+  color: var(--color-paper);
+  border-color: rgba(238, 240, 239, 0.4);
+}
+.hero .btn-ghost:hover { border-color: var(--color-paper); }
 .hero__visual {
   position: relative;
   aspect-ratio: 4 / 5;
@@ -475,6 +581,29 @@ h2.section-title {
   max-width: 60ch;
 }
 .about__text strong { color: var(--color-ink); font-weight: 600; }
+.about__photo {
+  margin: var(--sp-6) 0 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  max-width: 30rem;
+}
+.about__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+.about__photo figcaption {
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  background: var(--color-paper-dim);
+  border-top: 1px solid var(--color-line);
+}
 .about__facts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -607,25 +736,34 @@ h2.section-title {
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--color-line);
+  background: var(--color-paper-dim);
 }
 .gallery__grid .gallery-tile:nth-child(1) { aspect-ratio: auto; }
+.gallery-tile img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease);
+}
+.gallery-tile:hover img { transform: scale(1.05); }
+@media (prefers-reduced-motion: reduce) {
+  .gallery-tile:hover img { transform: none; }
+}
 .gallery-tile__caption {
   position: absolute;
   left: var(--sp-4);
   bottom: var(--sp-4);
+  z-index: 1;
   font-size: var(--fs-xs);
   color: var(--color-paper);
-  background: rgba(23,25,27,0.35);
+  background: rgba(23,25,27,0.62);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
   padding: var(--sp-1) var(--sp-3);
   border-radius: var(--radius-pill);
   letter-spacing: 0.02em;
 }
-.gallery-tile--1 { background: linear-gradient(150deg, #2A2320, var(--color-accent) 70%); }
-.gallery-tile--2 { background: repeating-linear-gradient(45deg, var(--color-paper-deep), var(--color-paper-deep) 10px, var(--color-paper-dim) 10px, var(--color-paper-dim) 20px); }
-.gallery-tile--3 { background: radial-gradient(circle at 30% 30%, var(--color-brass), var(--color-paper-deep) 70%); }
-.gallery-tile--4 { background: linear-gradient(100deg, var(--color-ink) 0%, var(--color-ink) 40%, var(--color-accent) 100%); }
-.gallery-tile--5 { background: conic-gradient(from 90deg, var(--color-paper-dim), var(--color-accent-soft), var(--color-paper-deep), var(--color-paper-dim)); }
-.gallery-tile--6 { background: linear-gradient(180deg, var(--color-accent-soft), var(--color-paper-dim) 60%); }
 
 /* =========================================================
    Reviews / trust
