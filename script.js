@@ -56,6 +56,71 @@
     revealEls.forEach(function (el) { el.classList.add("is-visible"); });
   }
 
+  /* ---------------- 3D tilt for menu cards ---------------- */
+  var tiltCards = document.querySelectorAll(".menu-card");
+  var rootStyles = getComputedStyle(document.documentElement);
+  var TILT_MAX = parseFloat(rootStyles.getPropertyValue("--tilt-max-deg")) || 6;
+  var canHover = window.matchMedia("(pointer: fine)").matches;
+
+  if (!reducedMotion && canHover && tiltCards.length) {
+    tiltCards.forEach(function (card) {
+      var raf = null;
+
+      function handleMove(e) {
+        var rect = card.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width;
+        var y = (e.clientY - rect.top) / rect.height;
+        var rotateY = (x - 0.5) * 2 * TILT_MAX;
+        var rotateX = (0.5 - y) * 2 * TILT_MAX;
+
+        if (raf) { cancelAnimationFrame(raf); }
+        raf = requestAnimationFrame(function () {
+          card.style.transition = "box-shadow var(--dur-med) var(--ease)";
+          card.style.transform = "rotateX(" + rotateX.toFixed(2) + "deg) rotateY(" + rotateY.toFixed(2) + "deg)";
+        });
+        card.classList.add("is-tilted");
+      }
+
+      function handleLeave() {
+        if (raf) { cancelAnimationFrame(raf); }
+        card.style.transition = "transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease)";
+        card.style.transform = "";
+        card.classList.remove("is-tilted");
+      }
+
+      card.addEventListener("mousemove", handleMove);
+      card.addEventListener("mouseleave", handleLeave);
+      card.addEventListener("blur", handleLeave);
+    });
+  }
+
+  /* ---------------- Hero background parallax ---------------- */
+  var heroSection = document.querySelector(".hero");
+  var heroVisual = document.querySelector(".hero__visual svg");
+  var PARALLAX_FACTOR = parseFloat(rootStyles.getPropertyValue("--parallax-factor")) || 0.12;
+
+  if (!reducedMotion && heroSection && heroVisual) {
+    var parallaxTicking = false;
+
+    function updateParallax() {
+      parallaxTicking = false;
+      var rect = heroSection.getBoundingClientRect();
+      // Skip work once the hero has scrolled well out of view.
+      if (rect.bottom < 0 || rect.top > window.innerHeight) { return; }
+      var offset = window.scrollY * PARALLAX_FACTOR;
+      heroVisual.style.transform = "translate3d(0, " + offset.toFixed(1) + "px, 0)";
+    }
+
+    window.addEventListener("scroll", function () {
+      if (!parallaxTicking) {
+        parallaxTicking = true;
+        requestAnimationFrame(updateParallax);
+      }
+    }, { passive: true });
+
+    updateParallax();
+  }
+
   /* ---------------- Footer year ---------------- */
   var yearEl = document.getElementById("year");
   if (yearEl) { yearEl.textContent = String(new Date().getFullYear()); }

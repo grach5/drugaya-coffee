@@ -69,6 +69,13 @@
   --gutter: clamp(1.25rem, 4vw, 3rem);
 
   --shadow-card: 0 1px 2px rgba(23,25,27,0.05), 0 12px 32px -18px rgba(23,25,27,0.35);
+  --shadow-card-tilt: 0 4px 10px rgba(23,25,27,0.08), 0 26px 48px -20px rgba(23,25,27,0.42);
+
+  /* ---------- 3D / motion tokens (card tilt, hero parallax, mark wobble) ---------- */
+  --tilt-max-deg: 6;          /* max menu-card tilt rotation, degrees (unitless — read by JS) */
+  --tilt-perspective: 1000px;
+  --parallax-factor: 0.12;    /* hero background scroll speed ratio (unitless — read by JS) */
+  --mark-spin-duration: 13s;  /* signature-mark continuous 3D wobble, one quiet cycle */
 }
 
 /* =========================================================
@@ -200,6 +207,7 @@ h2.section-title {
   gap: var(--sp-4);
   margin-block: var(--sp-2);
   color: var(--color-brass);
+  perspective: 600px;
 }
 .divider::before,
 .divider::after {
@@ -208,6 +216,20 @@ h2.section-title {
   flex: 1;
   background: var(--color-line);
   max-width: 8rem;
+}
+/* Divider mark — the only instance of the signature loop that keeps
+   turning: a slow, continuous 3D wobble (never a full flip, so it
+   never reads as a spinning logo). Wordmark and favicon stay still. */
+.divider .mark {
+  transform-style: preserve-3d;
+  animation: markWobble3d var(--mark-spin-duration) ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes markWobble3d {
+  0%, 100% { transform: rotateY(0deg) rotateZ(0deg); }
+  30%      { transform: rotateY(14deg) rotateZ(-3deg); }
+  60%      { transform: rotateY(-10deg) rotateZ(2deg); }
+  85%      { transform: rotateY(5deg) rotateZ(-1deg); }
 }
 
 /* =========================================================
@@ -418,6 +440,7 @@ h2.section-title {
   inset: 0;
   width: 100%;
   height: 100%;
+  will-change: transform;
 }
 .hero__visual-caption {
   position: absolute;
@@ -488,6 +511,7 @@ h2.section-title {
   display: grid;
   gap: var(--sp-5);
   grid-template-columns: 1fr;
+  perspective: var(--tilt-perspective);
 }
 @media (min-width: 700px) {
   .menu__grid { grid-template-columns: repeat(2, 1fr); }
@@ -500,6 +524,13 @@ h2.section-title {
   display: flex;
   flex-direction: column;
   gap: var(--sp-4);
+  box-shadow: var(--shadow-card);
+  transform-style: preserve-3d;
+  transition: box-shadow var(--dur-med) var(--ease);
+  will-change: transform;
+}
+.menu-card.is-tilted {
+  box-shadow: var(--shadow-card-tilt);
 }
 .menu-card--feature {
   background: linear-gradient(160deg, var(--color-accent), var(--color-accent-strong));
